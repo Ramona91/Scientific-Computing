@@ -16,12 +16,12 @@ import timeit
 # define wave equation parameters
 L = 1.0 # length of string
 c = 1.0 # speed of wave with which it traverses through space and time
-nx = 100 # number of space intervals # (xmax - xmin) / deltaX
-nt = 100 # number of time intervals # int((tmax - tmin) / deltaT) 
+nx = 100 # number of space intervals 
+nt = 100 # number of time intervals
 deltaX = L / nx # size of space interval
 deltaT = 0.01 # size of time interval 
 
-u = np.zeros((nx,nt)) #solution to WE, create matrix u with nx rows and nt columns, space: row; time: column
+u = np.zeros((nx,nt)) #solution to WE, create matrix u with nx+1 rows and nt+1 columns, space: row; time: column
 
 #print (u)
 
@@ -55,7 +55,7 @@ for j in range(1, nt-1):  #actually we wanna iterate through to the end of the a
 t0 = u[:,[0]]# t = 0
 t25 = u[:,[19]] # t = 25
 t50 = u[:,[49]]# t = 50
-t75 = u[:,[74]]# t = 75 #doesn't work
+t75 = u[:,[74]]# t = 75 # doesn't work
 t100 = u[:,[99]]# t = 100, # doesn't work
 #print (t50)
 
@@ -65,8 +65,10 @@ t100 = u[:,[99]]# t = 100, # doesn't work
 # plot the wave amplitudes over spatiatl locations (x) for different time points
 plt.plot(t0, label='t = 0')
 plt.plot(t25, label='t = 25')
-#plt.plot(t50, label='t = 50')
-plt.legend(loc='upper right')
+plt.plot(t50, label='t = 50')
+plt.plot(t75, label='t = 75')
+plt.plot(t100, label='t = 100')
+plt.legend(loc='lower left')
 
 plt.xlabel('x')
 plt.ylabel('Amplitude')
