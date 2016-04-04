@@ -47,10 +47,7 @@ for i in range(0, nx+1):
 		ui[nx, j] = 0 # bottom horizontal (x, y=0)
 		ui[0, j] = 1 # top horizontal (x, y=1)
 		#ui[i, 0] = ui[i, ny] # periodic boundary conditions along x-axis
-		
-		
-# define initial conditions
-# since ui was already initialized with zeros and intial conditions are zero, we don't have to fo anything
+
 
 
 # calculate u from ui, calculate Laplacians
@@ -59,54 +56,11 @@ for k in range(1, nt):
 		for j in range(0, ny+1):
 			u[i,j] = ui[i,j] + (deltaT *d/deltaX2) * (ui[i+1,j] + ui[i-1,j] + ui[i,(j+1)%(ny+1)] + ui[i,j-1] - 4*ui[i,j]) #for j+1 take j=0 value to take periodic boundary into account
 	ui = u
-	print(u)
-
-
-
-#----------------------VERSION 1: DOESN'T WORK YET -------------------------------------------------------------------------------------------------------
-# make a color map of continuous colors
-'''
-cmap2 = mpl.colors.LinearSegmentedColormap.from_list('my_colormap', ['blue','black','red'],256)
-
-# tell imshow about color map so that only set colors are used
-img2 = plt.imshow(ui,interpolation='nearest', cmap = cmap2, origin='lower')
-
-# make a color bar
-plt.colorbar(img2,cmap=cmap2)
-
-plt.show()
-'''
-#----------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-'''
-#----------------------version 2: works-----------------------------------------------------------
-# make a color map of fixed colors
-cmap = mpl.colors.ListedColormap(['blue','black','red'])
-bounds=[-6,-2,2,6] # numbers have to increase monotonically, amount of numbers has to be one larger than the number of colours
-norm = mpl.colors.BoundaryNorm(bounds, cmap.N)
-
-# tell imshow about color map so that only set colors are used
-img = plt.imshow(ui,interpolation='nearest', cmap = cmap,norm=norm, origin='lower')
-img = plt.imshow(ui) #RIGHT
-img.set_cmap('naam van colorkeuze look online') #optional
-plt.colorbar() #Right
-plt.show #Right
-
-# make a color bar
-plt.colorbar(img,cmap=cmap, norm=norm,boundaries=bounds,ticks=[-5,0,5])
-
-
-plt.show()
-#------------------------------------------------------------------------------------------------------------------
-'''
-
-
-
-
+	#print(u)
 	
-'''
-			uxx = (ui[i+1, j] + ui[i-1, j] - 2*ui[i,j]) / (deltaX)**2 # second derivative for x-values
-			uyy = (ui[i, j+1] + ui[i, j-1] - 2*ui[i,j]) / (deltaY)**2 # second derivative for y-values
-			
-			u[i,j] = deltaT * d *(uxx + uyy)
-'''
+img = plt.imshow(ui, origin='lower') #RIGHT
+#img.set_cmap('autumn') #optional
+
+plt.colorbar(img) #Right
+plt.show() #Right
+
