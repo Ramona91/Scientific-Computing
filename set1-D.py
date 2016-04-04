@@ -22,7 +22,7 @@ nx = 10 # no of interval in x-direction
 ny = 10 # # no of interval in x-direction
 deltaX = 1/nx # length of an interval
 deltaY = deltaX
-nt = 10 # number of time steps
+nt = 1000 # number of time steps
 tmax = 10.0 #max. simulation time
 deltaT = tmax/nt # length of time interval
 d = 1.0 # diffusion coefficient
@@ -40,27 +40,28 @@ for i in range(0, nx+1):
 	for j in range(0, ny+1):
 		ui[i,j] = 0
 '''
-	
+'''
 # define boundary conditions
 for i in range(0, nx+1):
 	for j in range(0, ny+1):
 		ui[nx, j] = 0 # bottom horizontal (x, y=0)
 		ui[0, j] = 1 # top horizontal (x, y=1)
 		#ui[i, 0] = ui[i, ny] # periodic boundary conditions along x-axis
-
+'''
 
 
 # calculate u from ui, calculate Laplacians
-for k in range(1, nt):
-	for i in range(1, nx):
-		for j in range(0, ny+1):
+for k in range(0, nt):
+	for j in range(0, ny+1):
+		ui[0, j] = 1
+		for i in range(1, nx):
 			u[i,j] = ui[i,j] + (deltaT *d/deltaX2) * (ui[i+1,j] + ui[i-1,j] + ui[i,(j+1)%(ny+1)] + ui[i,j-1] - 4*ui[i,j]) #for j+1 take j=0 value to take periodic boundary into account
 	ui = u
-	#print(u)
-	
-img = plt.imshow(ui, origin='lower') #RIGHT
-#img.set_cmap('autumn') #optional
+	print(ui)
 
+
+img = plt.imshow(ui, origin='upper') #RIGHT
 plt.colorbar(img) #Right
 plt.show() #Right
+
 
