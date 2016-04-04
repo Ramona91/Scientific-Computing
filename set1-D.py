@@ -18,8 +18,8 @@ from math import sqrt, sin, pi
 #from PIL import Image
 #import timeit
 
-nx = 100 # no of interval in x-direction
-ny = 100 # # no of interval in x-direction
+nx = 10 # no of interval in x-direction
+ny = 10 # # no of interval in x-direction
 deltaX = 1/nx # length of an interval
 deltaY = deltaX
 nt = 10 # number of time steps
@@ -34,19 +34,19 @@ ui = np.zeros((nx+1, ny+1)) # 2D array for x-andy-values at previous time
 
 
 
-
+'''
 # define intital conditions
 for i in range(0, nx+1):
 	for j in range(0, ny+1):
 		ui[i,j] = 0
-	
+'''
 	
 # define boundary conditions
 for i in range(0, nx+1):
 	for j in range(0, ny+1):
 		ui[nx, j] = 0 # bottom horizontal (x, y=0)
 		ui[0, j] = 1 # top horizontal (x, y=1)
-		ui[i, 0] = ui[i, ny] # periodic boundary conditions along x-axis
+		#ui[i, 0] = ui[i, ny] # periodic boundary conditions along x-axis
 		
 		
 # define initial conditions
@@ -56,13 +56,12 @@ for i in range(0, nx+1):
 # calculate u from ui, calculate Laplacians
 for k in range(1, nt):
 	for i in range(1, nx):
-		for j in range(1, ny):
-			u[i,j] = ui[i,j] + (deltaT *d/deltaX2) * (ui[i+1,j] + ui[i-1,j] + ui[i,j+1] + ui[i,j-1] - 4*ui[i,j])
-			ui[i,j] = u[i,j]
-	#print(u)
+		for j in range(0, ny+1):
+			u[i,j] = ui[i,j] + (deltaT *d/deltaX2) * (ui[i+1,j] + ui[i-1,j] + ui[i,(j+1)%(ny+1)] + ui[i,j-1] - 4*ui[i,j]) #for j+1 take j=0 value to take periodic boundary into account
+	ui = u
+	print(u)
 
-	
-#ListedColormap(colors, name='from_list', N=None) http://matplotlib.org/api/colors_api.html#matplotlib.colors.LinearSegmentedColormap.from_list
+
 
 #----------------------VERSION 1: DOESN'T WORK YET -------------------------------------------------------------------------------------------------------
 # make a color map of continuous colors
@@ -79,7 +78,7 @@ plt.show()
 '''
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
+'''
 #----------------------version 2: works-----------------------------------------------------------
 # make a color map of fixed colors
 cmap = mpl.colors.ListedColormap(['blue','black','red'])
@@ -88,6 +87,10 @@ norm = mpl.colors.BoundaryNorm(bounds, cmap.N)
 
 # tell imshow about color map so that only set colors are used
 img = plt.imshow(ui,interpolation='nearest', cmap = cmap,norm=norm, origin='lower')
+img = plt.imshow(ui) #RIGHT
+img.set_cmap('naam van colorkeuze look online') #optional
+plt.colorbar() #Right
+plt.show #Right
 
 # make a color bar
 plt.colorbar(img,cmap=cmap, norm=norm,boundaries=bounds,ticks=[-5,0,5])
@@ -95,13 +98,11 @@ plt.colorbar(img,cmap=cmap, norm=norm,boundaries=bounds,ticks=[-5,0,5])
 
 plt.show()
 #------------------------------------------------------------------------------------------------------------------
+'''
 
 
 
 
-
-	#print (u)
-	# u[i,j] = ui[i,j] + deltaT *d/deltaX2 * (ui[i+1,j] + ui[i-1,j], ui[i,j+1], ui[i,j-1] - 4*ui[i,j])
 	
 '''
 			uxx = (ui[i+1, j] + ui[i-1, j] - 2*ui[i,j]) / (deltaX)**2 # second derivative for x-values
