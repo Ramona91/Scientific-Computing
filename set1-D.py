@@ -31,7 +31,17 @@ deltaTMax = 4 * deltaT * d / deltaX2
 
 u = np.zeros((nx+1, ny+1)) # 2D array for x-andy-values at current time
 ui = np.zeros((nx+1, ny+1)) # 2D array for x-andy-values at previous time
+timeList = []
 
+
+# define length of time interval
+if deltaTMax <= 1:
+	deltaT = tmax/nt
+else:
+	deltaT = deltaX2/4*d
+	
+print(deltaT)
+print(deltaTMax)
 
 
 '''
@@ -57,11 +67,20 @@ for k in range(0, nt):
 		for i in range(1, nx):
 			u[i,j] = ui[i,j] + (deltaT *d/deltaX2) * (ui[i+1,j] + ui[i-1,j] + ui[i,(j+1)%(ny+1)] + ui[i,j-1] - 4*ui[i,j]) #for j+1 take j=0 value to take periodic boundary into account
 	ui = u
-	print(ui)
+	timeList.append(ui)
+	#print(ui)
+	
 
 
-img = plt.imshow(ui, origin='upper') #RIGHT
+t3 = timeList[3]
+t10 = timeList[10]
+
+print(t10)
+
+
+img = plt.imshow(t10, origin='lower') #RIGHT
 plt.colorbar(img) #Right
 plt.show() #Right
+
 
 
