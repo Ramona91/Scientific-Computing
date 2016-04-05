@@ -1,6 +1,6 @@
 # Scientific Computing
 # Set1, ex. D
-# implement a 2-dimensional diffusion equation 
+# implement a 2-dimensional diffusion equation  
 
 # http://www.timteatro.net/2010/10/29/performance-python-solving-the-2d-diffusion-equation-with-numpy/
 # plot colormaps: http://stackoverflow.com/questions/7229971/2d-grid-data-visualization-in-python
