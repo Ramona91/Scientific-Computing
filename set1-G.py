@@ -100,8 +100,6 @@ while(delta > tolerance):
 				delta = compare
 
 
-print(countIterations)
-
 #img = plt.imshow(s, origin='lower') #RIGHT
 #plt.colorbar(img) #Right
 #plt.show() #Right
