@@ -11,8 +11,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from math import sqrt, sin, pi
 
-nx = 30 # no of interval in x-direction
-ny = 30 # # no of interval in y-direction
+nx = 10 # no of interval in x-direction
+ny = 10 # # no of interval in y-direction
 deltaX = 1/nx # length of an interval
 tmax = 1.0 #max. simulation time
 d = 1.0 # diffusion coefficient
@@ -32,21 +32,53 @@ a2 = int (0.01 / deltaT)
 a3 = int (0.1 / deltaT)
 a4 = int (1 / deltaT)
 
+for j in range(0, ny+1):
+	ui[0, j] = 1
 
 # calculate u from ui, calculate Laplacians
 for k in range(0, nt + 1):
 	for j in range(0, ny+1):
-		ui[0, j] = 1
+		u[0, j] = 1
 		for i in range(1, nx):
 			u[i,j] = ui[i,j] + (deltaT *d/deltaX2) * (ui[i+1,j] + ui[i-1,j] + ui[i,(j+1)%(ny+1)] + ui[i,j-1] - 4*ui[i,j]) #for j+1 take j=0 value to take periodic boundary into account
-	ui = u
+	ui = np.copy(u)
 	# Add the values for the plots in the list
 	if(k == 0) or (k == a1) or (k == a2) or (k == a3) or (k == a4):
-		timeList.append(np.copy(ui))
+		timeList.append(np.copy(u))
 
 
+# Prepare a single column of each saved time step for the figure where the analytic solution is compared
+time1 = [row[3] for row in timeList[0]]
+time2 = [row[3] for row in timeList[1]]
+time3 = [row[3] for row in timeList[2]]
+time4 = [row[3] for row in timeList[3]]
+time5 = [row[3] for row in timeList[4]]
 
-# Make figure
+# List have to be flipped for a nice graph later
+time1 = list(reversed(time1))
+time2 = list(reversed(time2))
+time3 = list(reversed(time3))
+time4 = list(reversed(time4))
+time5 = list(reversed(time5))
+
+# For the percentage form 0 to 1 on the x-axis
+perc = np.linspace(0,1,len(time1))
+
+# Make figure at different time steps in 1 dimension
+plt.hold(True)
+first, = plt.plot(perc, time1, 'b')
+second, = plt.plot(perc, time2, 'g')
+third, = plt.plot(perc, time3, 'r')
+fourth, = plt.plot(perc, time4, 'c')
+fifth, = plt.plot(perc, time5, 'm')
+plt.legend([first, second, third, fourth, fifth], ['t = 0', 't = 0.001', 't = 0.01', 't = 0.1', 't = 1'], loc = 2)
+plt.xlabel('y - coordinate of the area')
+plt.ylabel('Concentration over the y-coordinate')
+plt.title('The discrete solution of the concentration, as a function of the y-coordinate, for different t-values.')
+plt.show()
+
+
+# Make colour figure of the entire window (2D) with colorbar
 fig = plt.figure()
 plt.subplot(231)
 plt.title('Diffusion at t = 0')
