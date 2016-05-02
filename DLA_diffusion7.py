@@ -89,11 +89,11 @@ def concentration_analytic(x,t):
 def do_analytic(t, s):
 	#C = [c(x,t) for x in X]
 	#X = list(range(0, 2))
-	X = np.linspace(0, 1, nx+1)
+	X = np.linspace(1, nx) # np.linspace(0, 1, nx+1)
 	for x in X:
 		for j in range(0, ny+1):
 			c = concentration_analytic(x,t)
-			s[x*(nx),j] = c # s[x*nx, j] = s[i,j]
+			s[x,j] = c # s[x*nx, j] = s[i,j]
 			print(x)
 	#s[0, (ny+1)*0.5] = 0
 	s[0, (ny+1)*0.5] = 0
